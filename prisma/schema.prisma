@@ -1,0 +1,27 @@
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+    provider             = "mysql"
+    url                  = env("DATABASE_URL")
+    referentialIntegrity = "prisma"
+}
+
+model Message {
+    id          Int       @id @default(autoincrement())
+    message     String
+    room        Room? @relation(fields: [room_id], references: [id])
+    room_id     Int
+
+    @@index([room_id])
+}
+
+model Room {
+    id          Int       @id @default(autoincrement())
+    room_number Int
+    name        String
+    description String
+    messages    Message[]
+}
