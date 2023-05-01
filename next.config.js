@@ -11,6 +11,7 @@ const nextConfig = {
   },
   typescript: {
     ignoreBuildErrors: true,
+    ignoreBuildWarnings: true,
   },
 };
 
