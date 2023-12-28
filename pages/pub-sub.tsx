@@ -27,10 +27,10 @@ export default function PubSub() {
     const _channel = ably.channels.get('status-updates')
     _channel.subscribe((message: Ably.Types.Message) => {
         setLogs(prev => [...prev, new LogEntry(`✅ event name: ${message.name} text: ${message.data.text}`)]);
-        setSquareState(!squareState);
+        
     })
     setChannel(_channel)
-
+    setSquareState(!squareState);
     return () => {
       _channel.unsubscribe()
     }
@@ -50,7 +50,8 @@ export default function PubSub() {
         'content-type': 'application/json',
       },
       'body': JSON.stringify({text: `${messageText} @ ${new Date().toISOString()}`})
-    })
+    });
+    setSquareState(!squareState);
   }
 
   
@@ -82,7 +83,7 @@ export default function PubSub() {
         </section>
 
         <section>
-          <h3>Subscribe</h3>
+          <h3>Subscribe now</h3>
           <Logger logEntries={logs} />
         </section>
       </Layout>
