@@ -15,7 +15,7 @@ export default function PubSub() {
   const [channel, setChannel] = useState<Ably.Types.RealtimeChannelPromise | null>(null)
   const [messageText, setMessageText] = useState<string>('A message')
 
-  const [squareState, setSquareState] = useState<boolean>(false);
+  const [squareState, setSquareState] = useState<string>("blue");
 
   useEffect(() => {
     const ably: Ably.Types.RealtimePromise = configureAbly({ authUrl: '/api/authentication/token-auth' })
@@ -28,7 +28,7 @@ export default function PubSub() {
     _channel.subscribe((message: Ably.Types.Message) => {
         setLogs(prev => [...prev, new LogEntry(`✅ event name: ${message.name} text: ${message.data.text}`)]);
         console.log("state of square: ", squareState);
-        setSquareState(!squareState);
+        setSquareState(message.data.text);
         
     })
     setChannel(_channel)
@@ -80,7 +80,7 @@ export default function PubSub() {
 
         <section>
           <h3>Test square</h3>
-          <div className={squareState ? styles.squareRed : styles.squareBlue} ></div>
+          <div className={styles.square} style={{backgroundColor: squareState}} ></div>
         </section>
 
         <section>

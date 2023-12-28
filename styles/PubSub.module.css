@@ -10,15 +10,9 @@
   margin: 1rem 1rem;
 }
 
-.squareRed {
+.square {
   width: 100px;
   height: 100px;
   background-color: #f00;
-  margin: 1rem 1rem;
-}
-.squareBlue {
-  width: 100px;
-  height: 100px;
-  background-color: #00f;
   margin: 1rem 1rem;
 }
