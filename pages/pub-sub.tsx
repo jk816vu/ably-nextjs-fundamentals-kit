@@ -53,7 +53,7 @@ export default function PubSub() {
       'headers': {
         'content-type': 'application/json',
       },
-      'body': JSON.stringify({text: `${messageText} @ ${new Date().toISOString()}`})
+      'body': JSON.stringify({text: messageText})
     });
     // setSquareState(!squareState);
   }
