@@ -62,7 +62,7 @@ export default function PubSub() {
         metaDescription="Ably PubSub with Next.js"
       >
         <p className={homeStyles.description}>
-          Publish messages on channels and subscribe to channels to receive messages. Click the <b>Public from the client</b> to publish a message on a channel from the web browser client. Click the <b>Public from the server</b> to publish a message from a serverless function.
+          Publish TESTESTEST messages on channels and subscribe to channels to receive messages. Click the <b>Public from the client</b> to publish a message on a channel from the web browser client. Click the <b>Public from the server</b> to publish a message from a serverless function.
         </p>
 
         <section className={styles.publish}>
