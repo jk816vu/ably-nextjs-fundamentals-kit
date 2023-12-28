@@ -44,7 +44,7 @@ export default function PubSub() {
     if(channel === null) return
 
     channel.publish('update-from-client', {text: messageText});
-    // setSquareState(!squareState);
+    setSquareState(messageText);
   }
 
   const publicFromServerHandler: MouseEventHandler = (_event: MouseEvent<HTMLButtonElement>) => {
@@ -55,7 +55,7 @@ export default function PubSub() {
       },
       'body': JSON.stringify({text: messageText})
     });
-    // setSquareState(!squareState);
+    setSquareState(messageText);
   }
 
   
