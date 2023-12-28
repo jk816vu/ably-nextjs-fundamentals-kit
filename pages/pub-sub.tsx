@@ -51,7 +51,7 @@ export default function PubSub() {
       },
       'body': JSON.stringify({text: `${messageText} @ ${new Date().toISOString()}`})
     });
-    setSquareState(!squareState);
+    // setSquareState(!squareState);
   }
 
   
