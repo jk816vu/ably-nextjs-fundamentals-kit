@@ -27,8 +27,11 @@ export default function PubSub() {
     const _channel = ably.channels.get('status-updates')
     _channel.subscribe((message: Ably.Types.Message) => {
         setLogs(prev => [...prev, new LogEntry(`✅ event name: ${message.name} text: ${message.data.text}`)]);
+        console.log("message ", message.data.text);
         console.log("state of square: ", squareState);
         setSquareState(message.data.text);
+        console.log("new state of square: ", squareState);
+
         
     })
     setChannel(_channel)
