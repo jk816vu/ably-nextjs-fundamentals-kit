@@ -15,6 +15,8 @@ export default function PubSub() {
   const [channel, setChannel] = useState<Ably.Types.RealtimeChannelPromise | null>(null)
   const [messageText, setMessageText] = useState<string>('A message')
 
+  const [squareState, setSquareState] = useState<boolean>(false);
+
   useEffect(() => {
     const ably: Ably.Types.RealtimePromise = configureAbly({ authUrl: '/api/authentication/token-auth' })
 
@@ -24,7 +26,7 @@ export default function PubSub() {
 
     const _channel = ably.channels.get('status-updates')
     _channel.subscribe((message: Ably.Types.Message) => {
-        setLogs(prev => [...prev, new LogEntry(`✉️ event name: ${message.name} text: ${message.data.text}`)])
+        setLogs(prev => [...prev, new LogEntry(`✅ event name: ${message.name} text: ${message.data.text}`)])
     })
     setChannel(_channel)
 
@@ -49,6 +51,8 @@ export default function PubSub() {
     })
   }
 
+  
+
   return (
       <Layout
         pageTitle="Ably PubSub with Next.js"
@@ -68,6 +72,11 @@ export default function PubSub() {
             <button onClick={publicFromClientHandler}>Publish from client</button>
             <button onClick={publicFromServerHandler}>Publish from server</button>
           </div>
+        </section>
+
+        <section>
+          <h3>Test square</h3>
+          <div className={squareState ? styles.squareRed : styles.squareBlue} ></div>
         </section>
 
         <section>
