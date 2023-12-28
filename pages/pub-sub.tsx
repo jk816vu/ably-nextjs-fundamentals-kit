@@ -43,7 +43,7 @@ export default function PubSub() {
   const publicFromClientHandler: MouseEventHandler = (_event: MouseEvent<HTMLButtonElement>) => {
     if(channel === null) return
 
-    channel.publish('update-from-client', {text: `${messageText} @ ${new Date().toISOString()}`});
+    channel.publish('update-from-client', {text: messageText});
     // setSquareState(!squareState);
   }
 
