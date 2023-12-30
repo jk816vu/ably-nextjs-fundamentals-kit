@@ -51,6 +51,13 @@ export default function Home(props) {
             channel.
           </p>
         </a>
+
+        <a href="./rooms" className={styles.card}>
+          <h2>Rooms &rarr;</h2>
+          <p>
+            Create room and connect to from another device.
+          </p>
+        </a>
       </div>
     </Layout>
   );

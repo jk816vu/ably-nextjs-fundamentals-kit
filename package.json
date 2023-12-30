@@ -1,30 +1,30 @@
 {
-  "name": "ably-nextjs-fundamentals-kit",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "prisma generate && next build",
-    "start": "next start",
-    "lint": "next lint",
-    "seed": "node prisma/seed.js"
-  },
-  "dependencies": {
-    "@ably-labs/react-hooks": "^2.0.9",
-    "@prisma/client": "^4.13.0",
-    "@types/node": "18.11.9",
-    "@types/react": "18.0.25",
-    "@types/react-dom": "18.0.8",
-    "dotenv": "^16.0.3",
-    "eslint": "8.27.0",
-    "eslint-config-next": "13.0.2",
-    "next": "13.0.2",
-    "prisma": "^4.13.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "typescript": "4.8.4"
-  },
-  "devDependencies": {
-    "eslint-plugin-react-hooks": "^4.6.0"
-  }
+	"name": "ably-nextjs-fundamentals-kit",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "prisma generate && next build",
+		"start": "next start",
+		"lint": "next lint",
+		"seed": "node prisma/seed.js"
+	},
+	"dependencies": {
+		"@ably-labs/react-hooks": "^2.0.9",
+		"@prisma/client": "^5.7.1",
+		"@types/node": "18.11.9",
+		"@types/react": "18.0.25",
+		"@types/react-dom": "18.0.8",
+		"dotenv": "^16.0.3",
+		"eslint": "8.27.0",
+		"eslint-config-next": "13.0.2",
+		"next": "13.0.2",
+		"react": "18.2.0",
+		"react-dom": "18.2.0",
+		"typescript": "4.8.4"
+	},
+	"devDependencies": {
+		"eslint-plugin-react-hooks": "^4.6.0",
+		"prisma": "^5.7.1"
+	}
 }
