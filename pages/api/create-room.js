@@ -1,30 +1,17 @@
 // pages/api/create-room.js
 
+import { createRoom } from "../services/roomService";
+
 export default async function handler(req, res) {
 	if (req.method === "POST") {
 		try {
-			// Logic to generate a room code and save room details in the database
-			const roomCode = generateRandomRoomCode(); // Implement your random code generation logic
-			// Save the room details in the database (using Prisma, for example)
-
-			res.status(200).json({ roomCode });
+			console.log("maybe this ? ");
+			const createdRoom = await createRoom();
+			res.status(200).json(createdRoom);
 		} catch (error) {
-			console.error("Error creating room:", error);
-			res.status(500).json({ error: "Failed to create room" });
+			res.status(500).json({ error: "Error creating room" });
 		}
 	} else {
-		res.status(405).json({ error: "Method Not Allowed" });
+		res.status(405).json({ error: "Method not allowed" });
 	}
-}
-
-function generateRandomRoomCode(length = 6) {
-	const digits = "0123456789";
-	let roomCode = "";
-
-	for (let i = 0; i < length; i++) {
-		const randomIndex = Math.floor(Math.random() * digits.length);
-		roomCode += digits.charAt(randomIndex);
-	}
-
-	return roomCode;
 }

@@ -20,7 +20,7 @@ model Message {
 
 model Room {
     id          Int       @id @default(autoincrement())
-    room_number Int
+    room_number Int       @unique
     name        String
     description String
     messages    Message[]
