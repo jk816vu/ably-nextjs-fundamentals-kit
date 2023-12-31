@@ -6,7 +6,7 @@ import { configureAbly } from '@ably-labs/react-hooks'
 import Layout from '../components/layout'
 import Logger, { LogEntry } from '../components/logger'
 import styles from '../styles/PubSub.module.css'
-import { createRoom, connectToRoom, publishFromClient } from './services/roomService';
+import { createRoom, connectToRoom, publishFromClient } from '../services/roomService';
 
 export default function Rooms() {
   const [logs, setLogs] = useState<Array<LogEntry>>([]);

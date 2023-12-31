@@ -1,6 +1,6 @@
 // pages/api/create-room.js
 
-import { createRoom } from "../services/roomService";
+import { createRoom } from "../../services/roomService";
 
 export default async function handler(req, res) {
 	if (req.method === "POST") {
