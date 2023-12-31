@@ -25,3 +25,10 @@ model Room {
     description String
     messages    Message[]
 }
+
+model Songs {
+    id       Int      @id @default(autoincrement())
+    name     String
+    lyrics   String
+    chords   String?
+}

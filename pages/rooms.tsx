@@ -11,6 +11,7 @@ import {
 	connectToRoom,
 	publishFromClient,
 } from "../services/roomService";
+import { disconnect } from "process";
 
 export default function Rooms() {
 	const [logs, setLogs] = useState<Array<LogEntry>>([]);
@@ -216,11 +217,21 @@ export default function Rooms() {
 		return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 	}
 
+	const disconnectChannel = () => {
+		if (roomChannel) {
+			roomChannel.unsubscribe();
+			setRoomChannel(null);
+			setConnectedRoomNumber(null);
+			setIsConnected(false);
+		}
+	};
+
 	return (
 		<Layout
 			pageTitle="Ably PubSub with Next.js"
 			metaDescription="Ably PubSub with Next.js"
 			roomNumber={connectedRoomNumber?.toString()}
+			disconnectChannel={disconnectChannel}
 		>
 			{!isConnected ? (
 				<section className={styles.buttonsContainer}>

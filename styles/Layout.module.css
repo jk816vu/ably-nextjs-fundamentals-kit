@@ -153,6 +153,28 @@
 	color: #1b4965;
 }
 
+.header .rightSide button.disconnectChannel {
+	margin-right: 2rem;
+	font-size: 1.5rem;
+	font-weight: bold;
+	text-decoration: none;
+	color: #1b4965;
+	background-color: #cae9ff;
+	height: 80%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	border-radius: 4px;
+	transition: 0.3s;
+}
+
+.header .rightSide button.disconnectChannel:hover {
+	background-color: #a8c4d8;
+	transition: 0.3s;
+}
+
 .header .rightSide .profilePicture .textInside {
 	display: flex;
 	justify-content: center;

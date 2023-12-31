@@ -11,6 +11,7 @@ type LayoutProps = {
 	showHomeLink?: boolean;
 	roomNumber?: string;
 	connectedPeople?: string;
+	disconnectChannel?: () => void; // New prop for disconnecting from the current channel
 };
 
 export default function Layout({
@@ -20,6 +21,7 @@ export default function Layout({
 	showHomeLink = true,
 	roomNumber,
 	connectedPeople,
+	disconnectChannel,
 }: LayoutProps) {
 	const headTitle =
 		(pageTitle ? `${pageTitle} - ` : "") +
@@ -38,6 +40,16 @@ export default function Layout({
 				<div className={styles.rightSide}>
 					{roomNumber ? (
 						<div className={styles.roomNumber}>{roomNumber}</div>
+					) : (
+						""
+					)}
+					{roomNumber ? (
+						<button
+							className={styles.disconnectChannel}
+							onClick={disconnectChannel}
+						>
+							Disconnect
+						</button>
 					) : (
 						""
 					)}
