@@ -1,18 +1,73 @@
-.publish {
-  min-width: 600px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.width {
+	width: 100px;
+	height: 100px;
+	background-color: #f00;
+	margin: 1rem 1rem;
 }
 
-.publish input, .publish button {
-  margin: 1rem 1rem;
+.buttonsContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	margin-top: auto;
+	margin-bottom: auto;
 }
 
-.square {
-  width: 100px;
-  height: 100px;
-  background-color: #f00;
-  margin: 1rem 1rem;
+.buttonsContainer button {
+	margin: 1rem 3rem;
+	height: 200px;
+	width: 200px;
+}
+
+.buttonsContainer button.createButton {
+	background-color: #1b4965;
+	color: #cae9ff;
+}
+
+.buttonsContainer button.connectButton {
+	background-color: #1b4965;
+	color: #cae9ff;
+}
+
+/* Add media queries for mobile responsiveness */
+@media screen and (max-width: 600px) {
+	.width {
+		width: 50px;
+		height: 50px;
+		margin: 0.5rem 0.5rem;
+	}
+
+	.buttonsContainer button {
+		margin: 0.5rem 1.5rem;
+		height: 100px;
+		width: 100px;
+	}
+}
+
+.testContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	margin-top: auto;
+	margin-bottom: auto;
+	flex-wrap: wrap;
+}
+
+.testContainer button {
+	margin: 1rem 3rem;
+	height: 100px;
+	width: 200px;
+}
+
+.testContainer button.changeColorButton {
+	background-color: #1b4965;
+	color: #cae9ff;
+}
+
+.testContainer .square {
+	width: 100px;
+	height: 100px;
+	margin: 1rem 1rem;
 }
