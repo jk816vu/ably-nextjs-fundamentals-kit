@@ -15,7 +15,7 @@ export async function createRoom() {
 				room_number: room_number,
 				name: "Your Room Name",
 				description: "Your description will be here",
-				queue: "[]",
+				queue: "",
 			},
 		});
 
@@ -116,18 +116,30 @@ export async function findSong(keyword) {
 
 export async function addToQueue(roomID, songId) {
 	try {
+		// if (songId === null) { //TODO
+		// 	console.log("songId is null");
+		// 	return;
+		// }
+
 		const room = await prisma.room.findUnique({
-			where: { id: roomID },
+			where: { room_number: parseInt(roomID) },
 		});
+		console.error("room", room);
+		console.error("roomID", roomID);
+		let queue = [];
+		if (room.queue === null || room.queue === "") {
+			console.error("queue is empty");
+			queue.push(songId);
+		} else {
+			console.error("queue is not empty");
+			queue = parseQueue(room.queue); // probably array i hope
+			queue.push(songId);
+		}
 
-		const queue = parseQueue(room.queue); // probably array i hope
-
-		queue.push(songId);
-
-		await prisma.room.update({
-			where: { id: roomID },
+		return await prisma.room.update({
+			where: { room_number: roomID },
 			data: {
-				queue: encodeQueue(queue), // probably string i hope
+				queue: encodeQueue(queue),
 			},
 		});
 	} catch (error) {
@@ -154,7 +166,17 @@ export async function retrieveQueue(room_number) {
 /* hopefully queue is array of song ids */
 export async function getSongsFromQueue(queue) {
 	try {
-		const songIds = queue.map((id) => parseInt(id, 10)); // Parse each id to an integer
+		if (!queue || !queue.length) {
+			console.log("queue is empty");
+			return [];
+		}
+
+		console.log("trying to getSongs From queue");
+		console.log("queue", queue);
+
+		// Parse each id to an integer
+		const songIds = queue.map((id) => parseInt(id, 10));
+		console.log("songIds", songIds);
 
 		const songs = await prisma.song.findMany({
 			where: {
@@ -172,9 +194,15 @@ export async function getSongsFromQueue(queue) {
 }
 
 function parseQueue(str) {
+	if (!str) {
+		return [];
+	}
 	return str.split(":");
 }
 
 function encodeQueue(arr) {
-	return str.join(":");
+	if (!arr) {
+		return "";
+	}
+	return arr.join(":");
 }

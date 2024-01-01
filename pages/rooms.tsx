@@ -71,8 +71,8 @@ export default function Rooms() {
 
 			setSquareState(message.data.color || "blue");
 			console.log("new state of square: ", message.data.text);
-
 			setConnectedRoomNumber(message.data.roomNumber);
+
 			setIsConnected(true);
 		});
 
@@ -95,6 +95,9 @@ export default function Rooms() {
 						`Received message for room ${connectedRoomNumber}:`,
 						message.data
 					);
+
+					retrieveQueueHandler(); //very nice *in tone of borat*
+
 					setSquareState(message.data.color || "blue");
 				});
 				setRoomChannel(roomChannel);
@@ -145,16 +148,8 @@ export default function Rooms() {
 		}
 	};
 
-	const retrieveQueueHandler: MouseEventHandler = async (_event) => {
+	const retrieveQueueHandler = async () => {
 		try {
-			console.log("Attempting to retrieve queue");
-			console.log(
-				"connectedRoomNumber: ",
-				connectedRoomNumber,
-				typeof connectedRoomNumber,
-				Number.isInteger(connectedRoomNumber)
-			);
-
 			const response = await fetch(
 				`/api/retrieve-queue?roomId=${String(connectedRoomNumber)}`,
 				{
@@ -163,8 +158,9 @@ export default function Rooms() {
 			);
 
 			if (response.ok) {
-				const queue = await response.json();
-				console.log("queue: ", queue);
+				const songs = await response.json();
+				console.log("songs: ", songs);
+				setSelectedSongs(songs);
 			} else {
 				console.error("Failed to get queue");
 			}
@@ -196,7 +192,7 @@ export default function Rooms() {
 					setConnectedRoomNumber(connectedRoom.room_number);
 					setIsConnected(true);
 
-					console.log("Attempting to create room");
+					console.log("Attempting to connect to room");
 					const roomChannel = ably?.channels.get(
 						`room-${connectedRoom.room_number}`
 					);
@@ -210,11 +206,11 @@ export default function Rooms() {
 								message.data
 							);
 							// Handle messages for the room-specific channel
+							//retrieveQueueHandler();
 
 							// Update squareState directly
 							setSquareState(message.data.color || "blue");
 						});
-
 						// Set the room-specific channel
 						setRoomChannel(roomChannel);
 					} else {
@@ -229,9 +225,7 @@ export default function Rooms() {
 		}
 	};
 
-	const publicFromClientHandler: MouseEventHandler = async (
-		_event: MouseEvent<HTMLButtonElement>
-	) => {
+	const publicFromClientHandler = async () => {
 		if (roomChannel === null || connectedRoomNumber === null) return;
 
 		const randomColor = getRandomColor();
@@ -270,10 +264,13 @@ export default function Rooms() {
 		setSelectedSongs((prevSongs) => [...prevSongs, item]);
 	};
 
-	const handleAutocompleteSelect = async (item: Item) => {
+	const handleAddToQueue = async (item: Item) => {
 		try {
 			// Make a POST request to add the selected song to the room
-			const response = await fetch("/api/selected-songs", {
+			console.log("handleAddToQueue start");
+			console.log("connectedRoomNumber", connectedRoomNumber);
+			console.log("item.id", item.id);
+			const response = await fetch("/api/add-to-queue", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -282,14 +279,23 @@ export default function Rooms() {
 			});
 
 			if (response.ok) {
-				const selectedSong = await response.json();
-				setSelectedSongs((prevSongs) => [...prevSongs, selectedSong]);
+				const songAddedToQueue = await response.json();
+				console.log("songAddedToQueue", songAddedToQueue);
+				publicFromClientHandler();
 			} else {
 				console.error("Failed to add selected song to the room");
 			}
 		} catch (error) {
 			console.error("Error adding selected song:", error);
 		}
+	};
+
+	const handleAutocompleteSelect = async (
+		item: Item,
+		_event: MouseEvent<HTMLButtonElement>
+	) => {
+		await handleAddToQueue(item);
+		await retrieveQueueHandler(_event);
 	};
 
 	return (
@@ -336,7 +342,7 @@ export default function Rooms() {
 			{isConnected ? (
 				<section className={styles.testContainer}>
 					<div style={{ width: 300 }}>
-						<Autocomplete onSelect={handleAutocompleteSelect} />
+						<Autocomplete onSelect={handleAddToQueue} />
 					</div>
 				</section>
 			) : (

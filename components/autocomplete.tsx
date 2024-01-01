@@ -30,11 +30,12 @@ const Autocomplete: React.FC<AutocompleteProps> = ({ onSelect }) => {
 		console.log(result);
 	};
 
-	const handleOnSelect = (item: Item) => {
+	const handleOnSelect = async (item: Item) => {
 		// the item selected
 		console.log(item);
 		// Call the onSelect prop from the parent component
-		onSelect(item);
+		await onSelect(item);
+		console.log("end Of handleOnSelect");
 	};
 
 	const handleOnFocus = () => {

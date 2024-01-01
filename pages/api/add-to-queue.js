@@ -3,18 +3,16 @@
 import { addToQueue } from "../../services/roomService";
 
 export default async function handler(req, res) {
+	console.log("attempting to add song to queue in api");
 	if (req.method === "POST") {
-		const { roomId, songId, order } = req.body;
+		const { roomId, songId } = req.body;
 
 		try {
 			// Pass the order value to the addSongToQueue function
-			const queueEntry = await addToQueue(roomId, songId, order);
+			const queueEntry = await addToQueue(roomId, songId);
 			res.status(200).json(queueEntry);
 		} catch (error) {
-			console.error(
-				"Error adding song to the queue but selected songs:",
-				error
-			);
+			console.error("Error adding song to the queue:", error);
 			res.status(500).json({ error: "Internal Server Error" });
 		}
 	} else {
