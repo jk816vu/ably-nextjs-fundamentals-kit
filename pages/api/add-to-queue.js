@@ -10,6 +10,10 @@ export default async function handler(req, res) {
 		try {
 			// Pass the order value to the addSongToQueue function
 			const queueEntry = await addToQueue(roomId, songId);
+			if (queueEntry === null) {
+				res.status(200).json({ error: "Song already in queue" });
+				return;
+			}
 			res.status(200).json(queueEntry);
 		} catch (error) {
 			console.error("Error adding song to the queue:", error);

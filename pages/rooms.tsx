@@ -96,7 +96,7 @@ export default function Rooms() {
 						message.data
 					);
 
-					retrieveQueueHandler(); //very nice *in tone of borat*
+					retrieveQueueHandler(connectedRoomNumber); //very nice *in tone of borat*
 
 					setSquareState(message.data.color || "blue");
 				});
@@ -148,10 +148,10 @@ export default function Rooms() {
 		}
 	};
 
-	const retrieveQueueHandler = async () => {
+	const retrieveQueueHandler = async (roomNumber: number) => {
 		try {
 			const response = await fetch(
-				`/api/retrieve-queue?roomId=${String(connectedRoomNumber)}`,
+				`/api/retrieve-queue?roomId=${String(roomNumber)}`,
 				{
 					method: "GET",
 				}
@@ -206,7 +206,6 @@ export default function Rooms() {
 								message.data
 							);
 							// Handle messages for the room-specific channel
-							//retrieveQueueHandler();
 
 							// Update squareState directly
 							setSquareState(message.data.color || "blue");
@@ -290,13 +289,13 @@ export default function Rooms() {
 		}
 	};
 
-	const handleAutocompleteSelect = async (
-		item: Item,
-		_event: MouseEvent<HTMLButtonElement>
-	) => {
-		await handleAddToQueue(item);
-		await retrieveQueueHandler(_event);
-	};
+	// const handleAutocompleteSelect = async (
+	// 	item: Item,
+	// 	_event: MouseEvent<HTMLButtonElement>
+	// ) => {
+	// 	await handleAddToQueue(item);
+	// 	await retrieveQueueHandler(_event);
+	// };
 
 	return (
 		<Layout
@@ -373,13 +372,13 @@ export default function Rooms() {
 				""
 			)}
 
-			{isConnected ? (
+			{/* {isConnected ? (
 				<section className={styles.something}>
-					<button onClick={retrieveQueueHandler}>Retrieve Queue</button>
+					<button onClick={retrieveQueueHandler(connectedRoomNumber || null)}>Retrieve Queue</button>
 				</section>
 			) : (
 				""
-			)}
+			)} */}
 
 			{/* 
 
