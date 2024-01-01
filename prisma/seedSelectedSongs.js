@@ -1,22 +1,22 @@
 const { PrismaClient } = require("@prisma/client");
-const { song } = require("./song.js");
+const { songs } = require("./songs.js");
 const prisma = new PrismaClient();
 
 const load = async () => {
 	try {
-		await prisma.song.deleteMany();
-		console.log("Deleted records in song table");
+		await prisma.SelectedSong.deleteMany();
+		console.log("Deleted records in SelectedSong table");
 
-		await prisma.$queryRaw`ALTER TABLE Song AUTO_INCREMENT = 1`;
+		await prisma.$queryRaw`ALTER TABLE SelectedSong AUTO_INCREMENT = 1`;
 		console.log("reset room auto increment to 1");
 
 		// await prisma.$queryRaw`ALTER TABLE Message AUTO_INCREMENT = 1`;
 		// console.log("reset message auto increment to 1");
 
-		await prisma.song.createMany({
-			data: song,
-		});
-		console.log("Added songs");
+		// await prisma.songs.createMany({
+		// 	data: songs,
+		// });
+		// console.log("Added songs");
 	} catch (e) {
 		console.error(e);
 		process.exit(1);

@@ -12,6 +12,7 @@ import {
 	publishFromClient,
 } from "../services/roomService";
 import { disconnect } from "process";
+import Autocomplete from "../components/autocomplete";
 
 export default function Rooms() {
 	const [logs, setLogs] = useState<Array<LogEntry>>([]);
@@ -31,6 +32,13 @@ export default function Rooms() {
 	const [roomColors, setRoomColors] = useState<Record<number, string>>({}); // Mapping between room numbers and colors
 
 	const [isConnected, setIsConnected] = useState<boolean>(false);
+
+	interface Songs {
+		id: number;
+		name: string;
+	}
+
+	const [selectedSongs, setSelectedSongs] = useState<Songs[]>([]);
 
 	useEffect(() => {
 		const ablyInstance: Ably.Types.RealtimePromise = configureAbly({
@@ -137,6 +145,34 @@ export default function Rooms() {
 		}
 	};
 
+	const retrieveQueueHandler: MouseEventHandler = async (_event) => {
+		try {
+			console.log("Attempting to retrieve queue");
+			console.log(
+				"connectedRoomNumber: ",
+				connectedRoomNumber,
+				typeof connectedRoomNumber,
+				Number.isInteger(connectedRoomNumber)
+			);
+
+			const response = await fetch(
+				`/api/retrieve-queue?roomId=${String(connectedRoomNumber)}`,
+				{
+					method: "GET",
+				}
+			);
+
+			if (response.ok) {
+				const queue = await response.json();
+				console.log("queue: ", queue);
+			} else {
+				console.error("Failed to get queue");
+			}
+		} catch (error) {
+			console.error("Error getting queue:", error);
+		}
+	};
+
 	const connectToRoomHandler: MouseEventHandler = async (
 		_event: MouseEvent<HTMLButtonElement>
 	) => {
@@ -226,6 +262,36 @@ export default function Rooms() {
 		}
 	};
 
+	const handleOnSelect = (item: Item) => {
+		// the item selected
+		console.log(item);
+
+		// Update the selected songs
+		setSelectedSongs((prevSongs) => [...prevSongs, item]);
+	};
+
+	const handleAutocompleteSelect = async (item: Item) => {
+		try {
+			// Make a POST request to add the selected song to the room
+			const response = await fetch("/api/selected-songs", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ roomId: connectedRoomNumber, songId: item.id }),
+			});
+
+			if (response.ok) {
+				const selectedSong = await response.json();
+				setSelectedSongs((prevSongs) => [...prevSongs, selectedSong]);
+			} else {
+				console.error("Failed to add selected song to the room");
+			}
+		} catch (error) {
+			console.error("Error adding selected song:", error);
+		}
+	};
+
 	return (
 		<Layout
 			pageTitle="Ably PubSub with Next.js"
@@ -246,6 +312,10 @@ export default function Rooms() {
 					</button>
 				</section>
 			) : (
+				""
+			)}
+
+			{isConnected ? (
 				<section className={styles.testContainer}>
 					<h3>Change color for this cube</h3>
 					<button
@@ -259,6 +329,50 @@ export default function Rooms() {
 						style={{ backgroundColor: squareState }}
 					></div>
 				</section>
+			) : (
+				""
+			)}
+
+			{isConnected ? (
+				<section className={styles.testContainer}>
+					<div style={{ width: 300 }}>
+						<Autocomplete onSelect={handleAutocompleteSelect} />
+					</div>
+				</section>
+			) : (
+				""
+			)}
+
+			{isConnected ? (
+				<section className={styles.tableOfSongs}>
+					<h3>Selected Songs</h3>
+					<table>
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Name</th>
+							</tr>
+						</thead>
+						<tbody>
+							{selectedSongs.map((song) => (
+								<tr key={song.id}>
+									<td>{song.id}</td>
+									<td>{song.name}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</section>
+			) : (
+				""
+			)}
+
+			{isConnected ? (
+				<section className={styles.something}>
+					<button onClick={retrieveQueueHandler}>Retrieve Queue</button>
+				</section>
+			) : (
+				""
 			)}
 
 			{/* 

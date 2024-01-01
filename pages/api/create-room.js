@@ -5,7 +5,6 @@ import { createRoom } from "../../services/roomService";
 export default async function handler(req, res) {
 	if (req.method === "POST") {
 		try {
-			console.log("maybe this ? ");
 			const createdRoom = await createRoom();
 			res.status(200).json(createdRoom);
 		} catch (error) {

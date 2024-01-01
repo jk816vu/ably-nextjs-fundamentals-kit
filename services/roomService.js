@@ -7,22 +7,17 @@ const prisma = new PrismaClient({
 });
 
 export async function createRoom() {
-	console.log("inside creating room");
 	try {
-		console.log("inside creating room try");
 		const room_number = generateRandomRoomNumber();
-		console.log("room_number", room_number);
 
 		const createdRoom = await prisma.room.create({
 			data: {
 				room_number: room_number,
 				name: "Your Room Name",
 				description: "Your description will be here",
+				queue: "[]",
 			},
 		});
-
-		console.log("createdRoom after this text");
-		console.log("createdRoom with value ", createdRoom);
 
 		return createdRoom;
 	} catch (error) {
@@ -33,13 +28,11 @@ export async function createRoom() {
 
 export async function connectToRoom(room_number) {
 	try {
-		console.log("inside connectToRoom");
 		const room = await prisma.room.findUnique({
 			where: { room_number },
 		});
 
 		if (room) {
-			console.log("found room", room);
 			return room;
 		} else {
 			console.log("room not found");
@@ -102,4 +95,86 @@ export async function getRoomByCode(room_number) {
 		console.error("Error getting room by code:", error);
 		throw error;
 	}
+}
+
+export async function findSong(keyword) {
+	try {
+		const songs = await prisma.song.findMany({
+			where: {
+				name: {
+					contains: keyword,
+				},
+			},
+			take: 20,
+		});
+		return songs;
+	} catch (error) {
+		console.error("Error searching for songs:", error);
+		throw error;
+	}
+}
+
+export async function addToQueue(roomID, songId) {
+	try {
+		const room = await prisma.room.findUnique({
+			where: { id: roomID },
+		});
+
+		const queue = parseQueue(room.queue); // probably array i hope
+
+		queue.push(songId);
+
+		await prisma.room.update({
+			where: { id: roomID },
+			data: {
+				queue: encodeQueue(queue), // probably string i hope
+			},
+		});
+	} catch (error) {
+		console.error("Error adding to queue:", error);
+		throw error;
+	}
+}
+
+export async function retrieveQueue(room_number) {
+	try {
+		const room = await prisma.room.findUnique({
+			where: { room_number: parseInt(room_number, 10) },
+		});
+
+		const queue = parseQueue(room.queue);
+
+		return queue;
+	} catch (error) {
+		console.error("Error retrieving queue:", error);
+		throw error;
+	}
+}
+
+/* hopefully queue is array of song ids */
+export async function getSongsFromQueue(queue) {
+	try {
+		const songIds = queue.map((id) => parseInt(id, 10)); // Parse each id to an integer
+
+		const songs = await prisma.song.findMany({
+			where: {
+				id: {
+					in: songIds,
+				},
+			},
+		});
+
+		return songs;
+	} catch (error) {
+		console.error("Error getting songs from queue:", error);
+		throw error;
+	}
+}
+
+function parseQueue(str) {
+	return str.split(":");
+}
+
+function encodeQueue(arr) {
+	return str.join(":");
 }

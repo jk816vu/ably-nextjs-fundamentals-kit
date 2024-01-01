@@ -37,3 +37,17 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env
+prisma/prisma/client/edge.d.ts
+prisma/prisma/client/edge.js
+prisma/prisma/client/index.d.ts
+prisma/prisma/client/index.js
+prisma/prisma/client/index-browser.js
+prisma/prisma/client/package.json
+prisma/prisma/client/query_engine-windows.dll.node
+prisma/prisma/client/schema.prisma
+prisma/prisma/client/runtime/edge.js
+prisma/prisma/client/runtime/edge-esm.js
+prisma/prisma/client/runtime/index-browser.d.ts
+prisma/prisma/client/runtime/index-browser.js
+prisma/prisma/client/runtime/library.d.ts
+prisma/prisma/client/runtime/library.js

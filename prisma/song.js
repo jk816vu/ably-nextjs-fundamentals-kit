@@ -1,6 +1,6 @@
 const { Prisma } = require("@prisma/client");
 
-const songs = [
+const song = [
 	{
 		name: "A dze idzeš Helenko, Helenko",
 		lyrics: "dajake prve slova",
@@ -9,5 +9,5 @@ const songs = [
 ];
 
 module.exports = {
-	songs,
+	song,
 };
